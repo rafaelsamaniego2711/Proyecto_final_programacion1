@@ -1,9 +1,6 @@
 #ifndef LIBROS_H
 #define LIBROS_H
 
-#include <stdio.h>
-#include <string.h>
-
 #define MAX_LIBROS 100
 
 struct Libro {
@@ -23,5 +20,6 @@ struct Inventario {
 int mostrarmenu();
 void registrolibro(struct Inventario *inv);
 void listarlibros(struct Inventario *inv);
+void buscarLibro(struct Inventario *inv); 
 
 #endif

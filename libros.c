@@ -73,20 +73,22 @@ void listarlibros(struct Inventario *inv) {
     }
 
     printf("\n--- Listado de Libros ---\n");
-    // Cabecera de la tabla
-    printf("%-10s | %-20s | %-15s | %-15s | %-10s | %s\n", 
-           "Codigo", "Titulo", "Clasificacion", "Autor", "ISBN", "Stock");
+    // Cabecera alineada a la izquierda con el ancho definido
+    printf("%-10s | %-20s | %-15s | %-15s | %-10s | %-6s\n", 
+           "Codigo", "Titulo", "Clasif.", "Autor", "ISBN", "Stock");
     printf("---------------------------------------------------------------------------------------------\n");
 
-    // Ciclo para imprimir los datos
+    // Ciclo para imprimir los datos reales
     for (int i = 0; i < inv->total; i++) {
-
-        printf("Libro %d: %s | Titulo: %s | Autor: %s | Stock: %d\n", 
-               i + 1, inv->libros[i].codigo_libro, inv->libros[i].titulo, 
-               inv->libros[i].autor_principal, inv->libros[i].stock);
+        printf("%-10s | %-20s | %-15s | %-15s | %-10s | %-6d\n", 
+               inv->libros[i].codigo_libro, 
+               inv->libros[i].titulo, 
+               inv->libros[i].clasificacion, 
+               inv->libros[i].autor_principal, 
+               inv->libros[i].isbn, 
+               inv->libros[i].stock);
     }
 }
-
 void buscarLibro(struct Inventario *inv) {
     char busqueda[100];
     int tipo;

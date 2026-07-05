@@ -30,6 +30,12 @@ void registrolibro(struct Inventario *inv) {
     printf("Ingrese el codigo del libro: ");
     fgets(nuevo.codigo_libro, 20, stdin);
     nuevo.codigo_libro[strcspn(nuevo.codigo_libro, "\n")] = 0;
+    for (int i = 0; i < inv->total; i++) {
+    if (strcmp(inv->libros[i].codigo_libro, nuevo.codigo_libro) == 0) {
+        printf("Error: Este codigo de libro ya existe en el inventario.\n");
+        return; 
+    }
+}
     printf("Ingrese el titulo del libro: ");
     fgets(nuevo.titulo, 100, stdin);
     nuevo.titulo[strcspn(nuevo.titulo, "\n")] = 0;
@@ -45,8 +51,7 @@ void registrolibro(struct Inventario *inv) {
     for (int i = 0; i < inv->total; i++) {
     if (strcmp(inv->libros[i].isbn, nuevo.isbn) == 0) {
         printf("Error: Este ISBN ya existe en el inventario.\n");
-        return; // Detiene la función y no permite guardar el libro duplicado
-    }
+        return; 
 }
     
     printf("Ingrese el titulo del libro: ");

@@ -56,7 +56,12 @@ void listarlibros(struct Inventario *inv) {
         return;
     }
     printf("\n--- Listado de Libros ---\n");
+    printf("%-10s | %-20s | %-15s | %-15s | %-10s | %s\n", 
+           "Codigo", "Titulo", "Clasificacion", "Autor", "ISBN", "Stock");
+    printf("---------------------------------------------------------------------------------------------\n");
+
     for (int i = 0; i < inv->total; i++) {
+
         printf("Libro %d: %s | Titulo: %s | Autor: %s | Stock: %d\n", 
                i + 1, inv->libros[i].codigo_libro, inv->libros[i].titulo, 
                inv->libros[i].autor_principal, inv->libros[i].stock);
@@ -87,3 +92,13 @@ void buscarLibro(struct Inventario *inv) {
     }
     if (!encontrado) printf("\nNo se encontraron resultados.\n");
 }
+
+        printf("%-10s | %-20s | %-15s | %-15s | %-10s | %d\n", 
+               inv->libros[i].codigo_libro, 
+               inv->libros[i].titulo, 
+               inv->libros[i].clasificacion, 
+               inv->libros[i].autor_principal, 
+               inv->libros[i].isbn, 
+               inv->libros[i].stock);
+    }
+

@@ -31,9 +31,10 @@ void registrolibro(struct Inventario *inv) {
     fgets(nuevo.codigo_libro, 20, stdin);
     nuevo.codigo_libro[strcspn(nuevo.codigo_libro, "\n")] = 0;
     for (int i = 0; i < inv->total; i++) {
-    if (strcmp(inv->libros[i].codigo_libro, nuevo.codigo_libro) == 0) {
-        printf("Error: Este codigo de libro ya existe en el inventario.\n");
-        return; 
+        if (strcmp(inv->libros[i].codigo_libro, nuevo.codigo_libro) == 0) {
+            printf("Error: Este codigo de libro ya existe en el inventario.\n");
+            return; 
+        
     }
 }
     printf("Ingrese el titulo del libro: ");
@@ -49,26 +50,11 @@ void registrolibro(struct Inventario *inv) {
     fgets(nuevo.isbn, 20, stdin);
     nuevo.isbn[strcspn(nuevo.isbn, "\n")] = 0;
     for (int i = 0; i < inv->total; i++) {
-    if (strcmp(inv->libros[i].isbn, nuevo.isbn) == 0) {
+        if (strcmp(inv->libros[i].isbn, nuevo.isbn) == 0) {
         printf("Error: Este ISBN ya existe en el inventario.\n");
         return; 
+    }
 }
-    
-    printf("Ingrese el titulo del libro: ");
-    fgets(nuevo.titulo, 100, stdin);
-    nuevo.titulo[strcspn(nuevo.titulo, "\n")] = 0;
-    
-    printf("Ingrese la clasificacion: ");
-    fgets(nuevo.clasificacion, 50, stdin);
-    nuevo.clasificacion[strcspn(nuevo.clasificacion, "\n")] = 0;
-    
-    printf("Ingrese el autor del libro: ");
-    fgets(nuevo.autor_principal, 80, stdin);
-    nuevo.autor_principal[strcspn(nuevo.autor_principal, "\n")] = 0;
-    
-    printf("Ingrese el isbn: ");
-    fgets(nuevo.isbn, 20, stdin);
-    nuevo.isbn[strcspn(nuevo.isbn, "\n")] = 0;
     printf("Ingrese el stock: ");
     scanf("%d", &nuevo.stock);
     while (getchar() != '\n');

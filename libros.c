@@ -42,6 +42,12 @@ void registrolibro(struct Inventario *inv) {
     printf("Ingrese el isbn: ");
     fgets(nuevo.isbn, 20, stdin);
     nuevo.isbn[strcspn(nuevo.isbn, "\n")] = 0;
+    for (int i = 0; i < inv->total; i++) {
+    if (strcmp(inv->libros[i].isbn, nuevo.isbn) == 0) {
+        printf("Error: Este ISBN ya existe en el inventario.\n");
+        return; // Detiene la función y no permite guardar el libro duplicado
+    }
+}
     
     printf("Ingrese el titulo del libro: ");
     fgets(nuevo.titulo, 100, stdin);
@@ -106,20 +112,14 @@ void buscarLibro(struct Inventario *inv) {
         else if (tipo == 3 && strcmp(inv->libros[i].clasificacion, busqueda) == 0) match = 1;
         else if (tipo == 4 && strcmp(inv->libros[i].autor_principal, busqueda) == 0) match = 1;
         else if (tipo == 5 && strcmp(inv->libros[i].isbn, busqueda) == 0) match = 1;
-        if (match) {
-            printf("Encontrado: %s | Titulo: %s | Autor: %s\n", inv->libros[i].codigo_libro, inv->libros[i].titulo, inv->libros[i].autor_principal);
-            encontrado = 1;
+            if (match) {
+            printf("%-10s | %-20s | %-15s | %-15s | %-10s | %-6d\n", 
+            inv->libros[i].codigo_libro, 
+            inv->libros[i].titulo, 
+            inv->libros[i].clasificacion, 
+            inv->libros[i].autor_principal, 
+            inv->libros[i].isbn, 
+            inv->libros[i].stock);
         }
     }
-    if (!encontrado) printf("\nNo se encontraron resultados.\n");
 }
-
-        printf("%-10s | %-20s | %-15s | %-15s | %-10s | %d\n", 
-               inv->libros[i].codigo_libro, 
-               inv->libros[i].titulo, 
-               inv->libros[i].clasificacion, 
-               inv->libros[i].autor_principal, 
-               inv->libros[i].isbn, 
-               inv->libros[i].stock);
-    }
-

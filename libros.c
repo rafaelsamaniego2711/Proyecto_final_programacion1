@@ -157,6 +157,8 @@ void buscarLibro(struct Inventario *inv) {
     fgets(busqueda, 100, stdin);
     busqueda[strcspn(busqueda, "\n")] = 0;
     int encontrado = 0;
+    printf("\n%-10s | %-20s | %-15s | %-15s | %-10s | %-6s\n", "Codigo", "Titulo", "Clasif.", "Autor", "ISBN", "Stock");
+    printf("------------------------------------------------------------------------------------------\n");
     for (int i = 0; i < inv->total; i++) {
         int match = 0;
         if (tipo == 1 && strcmp(inv->libros[i].codigo_libro, busqueda) == 0) match = 1;
@@ -174,4 +176,78 @@ void buscarLibro(struct Inventario *inv) {
             inv->libros[i].stock);
         }
     }
+}
+void actualizarLibro(struct Inventario *inv) {
+    char codigoBusqueda[20];
+    printf("\n--- Actualizar libro ---\n");
+    printf("Ingrese el codigo del libro a actualizar: ");
+    scanf("%s", codigoBusqueda);
+    while (getchar() != '\n'); // Limpia el buffer
+
+    int indice = -1;
+    for (int i = 0; i < inv->total; i++) {
+        if (strcmp(inv->libros[i].codigo_libro, codigoBusqueda) == 0) {
+            indice = i;
+            break;
+        }
+    }
+
+    if (indice == -1) {
+        printf("Error: Libro no encontrado.\n");
+        return;
+    }
+
+    // Si llegamos aquí, el libro existe. Ahora el menú de edición:
+    int opcion;
+    printf("\nQue campo desea modificar?\n");
+    printf("1. Codigo\n2. Titulo\n3. Clasificacion\n4. Autor\n5. ISBN\n6. stockOpcion: ");
+    scanf("%d", &opcion);
+    while (getchar() != '\n');
+
+    switch (opcion) {
+        case 1: // Modificar codigo
+            do {
+                printf("Nuevo codigo: ");
+                fgets(inv->libros[indice].codigo_libro, 20, stdin);
+                inv->libros[indice].codigo_libro[strcspn(inv->libros[indice].codigo_libro, "\n")] = 0;
+            } while (strlen(inv->libros[indice].codigo_libro) == 0);
+            break;
+        case 2: // modificar titulo
+            do {
+                printf("Nuevo titulo: ");
+                fgets(inv->libros[indice].titulo, 100, stdin);
+                inv->libros[indice].titulo[strcspn(inv->libros[indice].titulo, "\n")] = 0;
+            } while (strlen(inv->libros[indice].titulo) == 0);
+            break;
+            
+        case 3: // Modificar clasificacion
+            do {
+                printf("Nueva clasificacion: ");
+                fgets(inv->libros[indice].clasificacion, 50, stdin);
+                inv->libros[indice].clasificacion[strcspn(inv->libros[indice].clasificacion, "\n")] = 0;
+            } while (strlen(inv->libros[indice].clasificacion) == 0);
+            break;
+        case 4: // Modificar autor
+            do {
+                printf("Nuevo autor: ");
+                fgets(inv->libros[indice].autor_principal, 80, stdin);
+                inv->libros[indice].autor_principal[strcspn(inv->libros[indice].autor_principal, "\n")] = 0;
+            } while (strlen(inv->libros[indice].autor_principal) == 0);
+            break;
+        case 5: // Modificar isbn
+            do {
+                printf("Nueva ISBN: ");
+                fgets(inv->libros[indice].isbn, 20, stdin);
+                inv->libros[indice].isbn[strcspn(inv->libros[indice].isbn, "\n")] = 0;
+            } while (strlen(inv->libros[indice].isbn) == 0);
+            break;
+        case 6: // Modificar stock
+        printf("Nuevo stock: ");
+        scanf("%d", &inv->libros[indice].stock);
+        while (getchar() != '\n'); // Limpiamos el buffer
+        break;
+    
+        
+    }
+    printf("Libro actualizado exitosamente.\n");
 }

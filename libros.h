@@ -21,5 +21,6 @@ int mostrarmenu();
 void registrolibro(struct Inventario *inv);
 void listarlibros(struct Inventario *inv);
 void buscarLibro(struct Inventario *inv); 
+void actualizarLibro(struct Inventario *inv);
 
 #endif

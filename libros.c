@@ -42,6 +42,22 @@ void registrolibro(struct Inventario *inv) {
     printf("Ingrese el isbn: ");
     fgets(nuevo.isbn, 20, stdin);
     nuevo.isbn[strcspn(nuevo.isbn, "\n")] = 0;
+    
+    printf("Ingrese el titulo del libro: ");
+    fgets(nuevo.titulo, 100, stdin);
+    nuevo.titulo[strcspn(nuevo.titulo, "\n")] = 0;
+    
+    printf("Ingrese la clasificacion: ");
+    fgets(nuevo.clasificacion, 50, stdin);
+    nuevo.clasificacion[strcspn(nuevo.clasificacion, "\n")] = 0;
+    
+    printf("Ingrese el autor del libro: ");
+    fgets(nuevo.autor_principal, 80, stdin);
+    nuevo.autor_principal[strcspn(nuevo.autor_principal, "\n")] = 0;
+    
+    printf("Ingrese el isbn: ");
+    fgets(nuevo.isbn, 20, stdin);
+    nuevo.isbn[strcspn(nuevo.isbn, "\n")] = 0;
     printf("Ingrese el stock: ");
     scanf("%d", &nuevo.stock);
     while (getchar() != '\n');
@@ -55,11 +71,14 @@ void listarlibros(struct Inventario *inv) {
         printf("\nEl inventario esta vacio.\n");
         return;
     }
+
     printf("\n--- Listado de Libros ---\n");
+    // Cabecera de la tabla
     printf("%-10s | %-20s | %-15s | %-15s | %-10s | %s\n", 
            "Codigo", "Titulo", "Clasificacion", "Autor", "ISBN", "Stock");
     printf("---------------------------------------------------------------------------------------------\n");
 
+    // Ciclo para imprimir los datos
     for (int i = 0; i < inv->total; i++) {
 
         printf("Libro %d: %s | Titulo: %s | Autor: %s | Stock: %d\n", 

@@ -327,6 +327,89 @@ void eliminarLibro(struct Inventario *inv) {
         printf("Operacion cancelada.\n");
     }
 }
+
+void gestionarStock(struct Inventario *inv) {
+    char cod[20];
+    printf("\n--- Gestionar Stock ---\nIngrese el codigo del libro: ");
+    scanf("%s", cod);
+    while(getchar() != '\n');
+
+    for (int i = 0; i < inv->total; i++) {
+        if (strcmp(inv->libros[i].codigo_libro, cod) == 0) {
+            int opcion, cantidad;
+            printf("Libro: %s | Stock actual: %d\n", inv->libros[i].titulo, inv->libros[i].stock);
+            printf("1. Incrementar | 2. Disminuir: ");
+            scanf("%d", &opcion);
+            printf("Cantidad: ");
+            scanf("%d", &cantidad);
+            
+            if (opcion == 1) inv->libros[i].stock += cantidad;
+            else if (opcion == 2 && inv->libros[i].stock >= cantidad) inv->libros[i].stock -= cantidad;
+            else printf("Error: Operacion invalida.\n");
+            
+            printf("Nuevo stock: %d\n", inv->libros[i].stock);
+            return;
+        }
+    }
+    printf("Libro no encontrado.\n");
+}
+
+void identificarLibrosAgotados(struct Inventario *inv) {
+    printf("\n--- Libros Agotados (Stock 0) ---\n");
+    int encontrados = 0;
+    for (int i = 0; i < inv->total; i++) {
+        if (inv->libros[i].stock == 0) {
+            printf("- %s (Cod: %s)\n", inv->libros[i].titulo, inv->libros[i].codigo_libro);
+            encontrados = 1;
+        }
+    }
+    if (!encontrados) printf("No hay libros agotados.\n");
+}
+
+void identificarLibrosStockBajo(struct Inventario *inv) {
+    int limite;
+    printf("\nIngrese el limite de stock para filtrar: ");
+    scanf("%d", &limite);
+    printf("\n--- Libros con Stock Bajo (menor a %d) ---\n", limite);
+    for (int i = 0; i < inv->total; i++) {
+        if (inv->libros[i].stock < limite) {
+            printf("- %s: %d unidades\n", inv->libros[i].titulo, inv->libros[i].stock);
+        }
+    }
+}
+void reportePorClasificacion(struct Inventario *inv) {
+    printf("\n--- Reporte por Clasificacion ---\n");
+    
+    // Creamos un arreglo temporal para llevar la cuenta
+    char categorias[MAX_LIBROS][50];
+    int conteos[MAX_LIBROS];
+    int totalCategorias = 0;
+
+    for (int i = 0; i < inv->total; i++) {
+        int encontrada = 0;
+        // Buscamos si ya registramos esta categoría en nuestro conteo
+        for (int j = 0; j < totalCategorias; j++) {
+            if (strcmp(inv->libros[i].clasificacion, categorias[j]) == 0) {
+                conteos[j]++;
+                encontrada = 1;
+                break;
+            }
+        }
+        // Si es una categoría nueva, la agregamos
+        if (!encontrada) {
+            strcpy(categorias[totalCategorias], inv->libros[i].clasificacion);
+            conteos[totalCategorias] = 1;
+            totalCategorias++;
+        }
+    }
+
+    // Mostramos los resultados
+    for (int i = 0; i < totalCategorias; i++) {
+        printf("Categoria: %s | Libros: %d\n", categorias[i], conteos[i]);
+    }
+}
+
+
 void guardarInventario(struct Inventario *inv) {
     // Abrimos el archivo como .csv para que Excel lo abra directamente
     FILE *archivo = fopen("inventario.csv", "w");
@@ -385,3 +468,4 @@ void cargarInventario(struct Inventario *inv) {
         
         
    
+

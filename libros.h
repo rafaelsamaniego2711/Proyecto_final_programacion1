@@ -23,8 +23,13 @@ void listarlibros(struct Inventario *inv);
 void buscarLibro(struct Inventario *inv); 
 void actualizarLibro(struct Inventario *inv);
 void eliminarLibro(struct Inventario *inv);
+void gestionarStock(struct Inventario *inv); // Incluye Consultar y Actualizar (incrementar/disminuir)
+void identificarLibrosAgotados(struct Inventario *inv);
+void identificarLibrosStockBajo(struct Inventario *inv);
+void reportePorClasificacion(struct Inventario *inv);
+int esCodigoValido(char *codigo);
 void guardarInventario(struct Inventario *inv);
 void cargarInventario(struct Inventario *inv);
-// Añade esto en tu archivo libros.h
-int esCodigoValido(char *codigo);
+
+
 #endif

@@ -324,6 +324,52 @@ void eliminarLibro(struct Inventario *inv) {
         printf("Operacion cancelada.\n");
     }
 }
-        
-        
-   
+void gestionarStock(struct Inventario *inv) {
+    char cod[20];
+    printf("\n--- Gestionar Stock ---\nIngrese el codigo del libro: ");
+    scanf("%s", cod);
+    while(getchar() != '\n');
+
+    for (int i = 0; i < inv->total; i++) {
+        if (strcmp(inv->libros[i].codigo_libro, cod) == 0) {
+            int opcion, cantidad;
+            printf("Libro: %s | Stock actual: %d\n", inv->libros[i].titulo, inv->libros[i].stock);
+            printf("1. Incrementar | 2. Disminuir: ");
+            scanf("%d", &opcion);
+            printf("Cantidad: ");
+            scanf("%d", &cantidad);
+            
+            if (opcion == 1) inv->libros[i].stock += cantidad;
+            else if (opcion == 2 && inv->libros[i].stock >= cantidad) inv->libros[i].stock -= cantidad;
+            else printf("Error: Operacion invalida.\n");
+            
+            printf("Nuevo stock: %d\n", inv->libros[i].stock);
+            return;
+        }
+    }
+    printf("Libro no encontrado.\n");
+}
+
+void identificarLibrosAgotados(struct Inventario *inv) {
+    printf("\n--- Libros Agotados (Stock 0) ---\n");
+    int encontrados = 0;
+    for (int i = 0; i < inv->total; i++) {
+        if (inv->libros[i].stock == 0) {
+            printf("- %s (Cod: %s)\n", inv->libros[i].titulo, inv->libros[i].codigo_libro);
+            encontrados = 1;
+        }
+    }
+    if (!encontrados) printf("No hay libros agotados.\n");
+}
+
+void identificarLibrosStockBajo(struct Inventario *inv) {
+    int limite;
+    printf("\nIngrese el limite de stock para filtrar: ");
+    scanf("%d", &limite);
+    printf("\n--- Libros con Stock Bajo (menor a %d) ---\n", limite);
+    for (int i = 0; i < inv->total; i++) {
+        if (inv->libros[i].stock < limite) {
+            printf("- %s: %d unidades\n", inv->libros[i].titulo, inv->libros[i].stock);
+        }
+    }
+}

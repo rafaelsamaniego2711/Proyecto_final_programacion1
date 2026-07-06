@@ -373,3 +373,34 @@ void identificarLibrosStockBajo(struct Inventario *inv) {
         }
     }
 }
+void reportePorClasificacion(struct Inventario *inv) {
+    printf("\n--- Reporte por Clasificacion ---\n");
+    
+    // Creamos un arreglo temporal para llevar la cuenta
+    char categorias[MAX_LIBROS][50];
+    int conteos[MAX_LIBROS];
+    int totalCategorias = 0;
+
+    for (int i = 0; i < inv->total; i++) {
+        int encontrada = 0;
+        // Buscamos si ya registramos esta categoría en nuestro conteo
+        for (int j = 0; j < totalCategorias; j++) {
+            if (strcmp(inv->libros[i].clasificacion, categorias[j]) == 0) {
+                conteos[j]++;
+                encontrada = 1;
+                break;
+            }
+        }
+        // Si es una categoría nueva, la agregamos
+        if (!encontrada) {
+            strcpy(categorias[totalCategorias], inv->libros[i].clasificacion);
+            conteos[totalCategorias] = 1;
+            totalCategorias++;
+        }
+    }
+
+    // Mostramos los resultados
+    for (int i = 0; i < totalCategorias; i++) {
+        printf("Categoria: %s | Libros: %d\n", categorias[i], conteos[i]);
+    }
+}

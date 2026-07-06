@@ -31,6 +31,7 @@ int main() {
     }
     break;
 }
+            case 7: reportePorClasificacion(&miLibreria); break;         
             case 9: printf("Saliendo...\n"); break;
             default: printf("Opcion no valida.\n");
         }

@@ -26,5 +26,6 @@ void eliminarLibro(struct Inventario *inv);
 void gestionarStock(struct Inventario *inv); // Incluye Consultar y Actualizar (incrementar/disminuir)
 void identificarLibrosAgotados(struct Inventario *inv);
 void identificarLibrosStockBajo(struct Inventario *inv);
+void reportePorClasificacion(struct Inventario *inv);
 
 #endif

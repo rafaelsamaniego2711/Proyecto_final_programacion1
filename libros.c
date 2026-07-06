@@ -199,55 +199,89 @@ void actualizarLibro(struct Inventario *inv) {
 
     // Si llegamos aquí, el libro existe. Ahora el menú de edición:
     int opcion;
-    printf("\nQue campo desea modificar?\n");
-    printf("1. Codigo\n2. Titulo\n3. Clasificacion\n4. Autor\n5. ISBN\n6. stockOpcion: ");
-    scanf("%d", &opcion);
-    while (getchar() != '\n');
+    char continuar;
 
-    switch (opcion) {
-        case 1: // Modificar codigo
-            do {
-                printf("Nuevo codigo: ");
-                fgets(inv->libros[indice].codigo_libro, 20, stdin);
-                inv->libros[indice].codigo_libro[strcspn(inv->libros[indice].codigo_libro, "\n")] = 0;
-            } while (strlen(inv->libros[indice].codigo_libro) == 0);
-            break;
-        case 2: // modificar titulo
-            do {
+
+    do {
+        printf("\nQue campo desea modificar?\n");
+        printf("1. Codigo\n2. Titulo\n3. Clasificacion\n4. Autor\n5. ISBN\n6. Stock\nOpcion: ");
+        scanf("%d", &opcion);
+        while (getchar() != '\n');
+
+        switch (opcion) {
+            case 1: // Codigo (con validación de duplicados)
+                {
+                    char nuevoCodigo[20];
+                    int duplicado;
+                    do {
+                        duplicado = 0;
+                        printf("Nuevo codigo: ");
+                        scanf("%s", nuevoCodigo);
+                        for(int i = 0; i < inv->total; i++) {
+                            if(i != indice && strcmp(inv->libros[i].codigo_libro, nuevoCodigo) == 0) {
+                                duplicado = 1;
+                                break;
+                            }
+                        }
+                        if(duplicado) printf("Error: Codigo duplicado.\n");
+                        else strcpy(inv->libros[indice].codigo_libro, nuevoCodigo);
+                    } while (duplicado == 1);
+                }
+                break;
+            case 2: // Titulo
                 printf("Nuevo titulo: ");
                 fgets(inv->libros[indice].titulo, 100, stdin);
                 inv->libros[indice].titulo[strcspn(inv->libros[indice].titulo, "\n")] = 0;
-            } while (strlen(inv->libros[indice].titulo) == 0);
-            break;
-            
-        case 3: // Modificar clasificacion
-            do {
+                break;
+            case 3: // Clasificacion
                 printf("Nueva clasificacion: ");
                 fgets(inv->libros[indice].clasificacion, 50, stdin);
                 inv->libros[indice].clasificacion[strcspn(inv->libros[indice].clasificacion, "\n")] = 0;
-            } while (strlen(inv->libros[indice].clasificacion) == 0);
-            break;
-        case 4: // Modificar autor
-            do {
+                break;
+            case 4: // Autor
                 printf("Nuevo autor: ");
                 fgets(inv->libros[indice].autor_principal, 80, stdin);
                 inv->libros[indice].autor_principal[strcspn(inv->libros[indice].autor_principal, "\n")] = 0;
-            } while (strlen(inv->libros[indice].autor_principal) == 0);
-            break;
-        case 5: // Modificar isbn
-            do {
-                printf("Nueva ISBN: ");
-                fgets(inv->libros[indice].isbn, 20, stdin);
-                inv->libros[indice].isbn[strcspn(inv->libros[indice].isbn, "\n")] = 0;
-            } while (strlen(inv->libros[indice].isbn) == 0);
-            break;
-        case 6: // Modificar stock
-        printf("Nuevo stock: ");
-        scanf("%d", &inv->libros[indice].stock);
-        while (getchar() != '\n'); // Limpiamos el buffer
-        break;
-    
+                break;
+            case 5: // ISBN (con validación de duplicados)
+                {
+                    char nuevoIsbn[20];
+                    int duplicado;
+                    do {
+                        duplicado = 0;
+                        printf("Nueva ISBN: ");
+                        fgets(nuevoIsbn, 20, stdin);
+                        nuevoIsbn[strcspn(nuevoIsbn, "\n")] = 0; // Limpiar el \n
+
+                        // Verificamos si existe en otro libro
+                        for(int i = 0; i < inv->total; i++) {
+                            if(i != indice && strcmp(inv->libros[i].isbn, nuevoIsbn) == 0) {
+                                duplicado = 1;
+                                break;
+                            }
+                        }
+                        if(duplicado) printf("Error: Este ISBN ya esta asignado a otro libro.\n");
+                        else strcpy(inv->libros[indice].isbn, nuevoIsbn);
+                    } while (duplicado == 1);
+                }
+                break;
+            case 6: // Stock
+                printf("Nuevo stock: ");
+                scanf("%d", &inv->libros[indice].stock);
+                while (getchar() != '\n');
+                break;
+            default:
+                printf("Opcion no valida.\n");
+        }
+
+        printf("¿Desea modificar otro campo? (s/n): ");
+        scanf(" %c", &continuar);
+        while (getchar() != '\n');
+
+    } while (continuar == 's' || continuar == 'S');
+
+    printf("Actualizacion finalizada.\n");
+}           
         
-    }
-    printf("Libro actualizado exitosamente.\n");
-}
+        
+   

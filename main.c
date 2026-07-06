@@ -12,6 +12,7 @@ int main() {
             case 2: listarlibros(&miLibreria); break;
             case 3: buscarLibro(&miLibreria); break;
             case 4: actualizarLibro(&miLibreria); break;
+            case 5: eliminarLibro(&miLibreria); break;
             case 9: printf("Saliendo...\n"); break;
             default: printf("Opcion no valida.\n");
         }

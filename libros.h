@@ -22,5 +22,6 @@ void registrolibro(struct Inventario *inv);
 void listarlibros(struct Inventario *inv);
 void buscarLibro(struct Inventario *inv); 
 void actualizarLibro(struct Inventario *inv);
+void eliminarLibro(struct Inventario *inv);
 
 #endif

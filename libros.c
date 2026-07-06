@@ -281,7 +281,49 @@ void actualizarLibro(struct Inventario *inv) {
     } while (continuar == 's' || continuar == 'S');
 
     printf("Actualizacion finalizada.\n");
-}           
+}
+
+void eliminarLibro(struct Inventario *inv) {
+    char codigoBusqueda[20];
+    printf("\n--- Eliminar libro ---\n");
+    printf("Ingrese el codigo del libro a eliminar: ");
+    scanf("%s", codigoBusqueda);
+    while (getchar() != '\n');
+
+    int indice = -1;
+    // 1. Buscamos el libro
+    for (int i = 0; i < inv->total; i++) {
+        if (strcmp(inv->libros[i].codigo_libro, codigoBusqueda) == 0) {
+            indice = i;
+            break;
+        }
+    }
+
+    // 2. Si no lo encontramos
+    if (indice == -1) {
+        printf("Error: Libro no encontrado.\n");
+        return;
+    }
+
+    // 3. Confirmación de seguridad
+    char confirmar;
+    printf("Esta seguro de eliminar el libro '%s'? (s/n): ", inv->libros[indice].titulo);
+    scanf(" %c", &confirmar);
+    while (getchar() != '\n');
+
+    if (confirmar == 's' || confirmar == 'S') {
+        // 4. La magia de la eliminación eficiente:
+        // Movemos el último libro del arreglo a la posición que queremos borrar
+        inv->libros[indice] = inv->libros[inv->total - 1];
+        
+        // 5. Reducimos el total de libros
+        inv->total--;
+        
+        printf("El libro ha sido eliminado exitosamente.\n");
+    } else {
+        printf("Operacion cancelada.\n");
+    }
+}
         
         
    

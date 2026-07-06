@@ -1,7 +1,7 @@
 #include "libros.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <ctype.h>
 int mostrarmenu () {
     int opcion;
     printf ("\n-----Gestion de libros-----\n");
@@ -35,22 +35,25 @@ do {
     fgets(nuevo.codigo_libro, 20, stdin);
     nuevo.codigo_libro[strcspn(nuevo.codigo_libro, "\n")] = 0;
 
-    // 1. Validar vacío
-    if (strlen(nuevo.codigo_libro) == 0) {
-        printf("Error: El codigo no puede estar vacio.\n");
-        esCorrecto = 0;
-        continue; // Saltar al inicio del bucle
-    }
+    // Nueva validación integrada
+    int len = strlen(nuevo.codigo_libro);
 
-    // 2. Validar alfanumérico
-    for (int i = 0; i < strlen(nuevo.codigo_libro); i++) {
-        char c = nuevo.codigo_libro[i];
-        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))) {
-            printf("Error: Solo letras y numeros.\n");
-            esCorrecto = 0;
-            break; 
+    // 1. Validar longitud (1 a 15)
+    if (len < 1 || len > 15) {
+    printf("Error: El codigo debe tener entre 1 y 15 caracteres.\n");
+    esCorrecto = 0;
+    } 
+    // 2. Validar alfanumérico (letras y números, sin espacios)
+    else {
+        for (int i = 0; i < len; i++) {
+            if (!isalnum(nuevo.codigo_libro[i])) {
+                printf("Error: El codigo solo permite letras y numeros (sin espacios).\n");
+                esCorrecto = 0;
+                break; 
+            }
         }
     }
+
 
     // 3. Validar UNICIDAD (Aquí está el secreto)
     if (esCorrecto == 1) { // Solo si pasó las pruebas anteriores, buscamos duplicados
@@ -324,6 +327,61 @@ void eliminarLibro(struct Inventario *inv) {
         printf("Operacion cancelada.\n");
     }
 }
+void guardarInventario(struct Inventario *inv) {
+    // Abrimos el archivo como .csv para que Excel lo abra directamente
+    FILE *archivo = fopen("inventario.csv", "w");
+
+    if (archivo == NULL) {
+        printf("Error: No se pudo abrir el archivo para guardar.\n");
+        return;
+    }
+
+    // 1. Escribimos el encabezado (esto le dice a Excel qué es cada columna)
+    fprintf(archivo, "Codigo,Titulo,Clasificacion,Autor,ISBN,Stock\n");
+
+    // 2. Recorremos el arreglo de libros y guardamos cada registro
+    // Usamos comas (,) para separar los campos, que es lo que define al CSV
+    for (int i = 0; i < inv->total; i++) {
+        fprintf(archivo, "%s,%s,%s,%s,%s,%d\n", 
+                inv->libros[i].codigo_libro,
+                inv->libros[i].titulo,
+                inv->libros[i].clasificacion,
+                inv->libros[i].autor_principal,
+                inv->libros[i].isbn,
+                inv->libros[i].stock);
+    }
+
+    fclose(archivo);
+    printf("Inventario guardado exitosamente en 'inventario.csv'.\n");
+    printf("Puedes abrir este archivo directamente con Excel.\n");
+}
+void cargarInventario(struct Inventario *inv) {
+    FILE *archivo = fopen("inventario.csv", "r");
+    if (archivo == NULL) {
+        printf("No se encontro archivo previo. Iniciando inventario vacio.\n");
+        return;
+    }
+
+    // Saltamos el encabezado (la primera línea)
+    char linea[200];
+    fgets(linea, sizeof(linea), archivo); 
+
+    inv->total = 0;
+    // Leemos línea por línea hasta el final
+    while (fscanf(archivo, "%[^,],%[^,],%[^,],%[^,],%[^,],%d\n", 
+                  inv->libros[inv->total].codigo_libro,
+                  inv->libros[inv->total].titulo,
+                  inv->libros[inv->total].clasificacion,
+                  inv->libros[inv->total].autor_principal,
+                  inv->libros[inv->total].isbn,
+                  &inv->libros[inv->total].stock) == 6) {
+        inv->total++;
+    }
+
+    fclose(archivo);
+    printf("Inventario cargado exitosamente. Total libros: %d\n", inv->total);
+}
+
         
         
    

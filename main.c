@@ -4,6 +4,7 @@
 int main() {
     struct Inventario miLibreria;
     miLibreria.total = 0;
+    cargarInventario(&miLibreria);
     int opcion;
     do {
         opcion = mostrarmenu();
@@ -13,6 +14,7 @@ int main() {
             case 3: buscarLibro(&miLibreria); break;
             case 4: actualizarLibro(&miLibreria); break;
             case 5: eliminarLibro(&miLibreria); break;
+            case 8: guardarInventario(&miLibreria); break;
             case 9: printf("Saliendo...\n"); break;
             default: printf("Opcion no valida.\n");
         }

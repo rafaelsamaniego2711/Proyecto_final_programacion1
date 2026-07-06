@@ -23,5 +23,8 @@ void listarlibros(struct Inventario *inv);
 void buscarLibro(struct Inventario *inv); 
 void actualizarLibro(struct Inventario *inv);
 void eliminarLibro(struct Inventario *inv);
-
+void guardarInventario(struct Inventario *inv);
+void cargarInventario(struct Inventario *inv);
+// Añade esto en tu archivo libros.h
+int esCodigoValido(char *codigo);
 #endif
